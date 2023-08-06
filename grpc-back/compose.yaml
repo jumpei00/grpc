@@ -1,0 +1,61 @@
+services:
+    grpc-back:
+        container_name: grpc-back
+        build:
+            context: ./
+            dockerfile: ./docker/api/dockerfile
+        environment:
+            MYSQL_DATABASE: todo
+            MYSQL_USER: development
+            MYSQL_PASSWORD: password
+            MYSQL_HOST: mysql
+            MYSQL_PORT: 3306
+        ports:
+            - "8080:8080"
+        volumes:
+            - type: bind
+              source: ./
+              target: /grpc-back
+        depends_on:
+            db-migrations:
+                condition: service_completed_successfully
+        command: air
+
+    mysql:
+        container_name: mysql
+        image: mysql:8.0.33
+        environment:
+            MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+            MYSQL_DATABASE: todo
+            MYSQL_USER: development
+            MYSQL_PASSWORD: password
+        ports:
+            - "3306:3306"
+        volumes:
+            - type: volume
+              source: mysql-volume
+              target: /var/lib/mysql
+              volume:
+                  nocopy: true
+
+    db-migrations:
+        container_name: db-migrations
+        build:
+            context: ./
+            dockerfile: ./docker/db-migrations/dockerfile
+        environment:
+            MYSQL_DATABASE: todo
+            MYSQL_USER: development
+            MYSQL_PASSWORD: password
+            MYSQL_HOST: mysql
+            MYSQL_PORT: 3306
+        volumes:
+            - type: bind
+              source: ./db
+              target: /db
+        depends_on:
+            - mysql
+        command: make up
+
+volumes:
+    mysql-volume:
