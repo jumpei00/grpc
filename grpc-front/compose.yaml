@@ -1,0 +1,19 @@
+services:
+    grpc-front:
+        container_name: grpc-front
+        build:
+            context: ./
+            dockerfile: ./docker/dockerfile
+        ports:
+            - "3000:3000"
+        networks:
+            - grpc-back_default
+        volumes:
+            - type: bind
+              source: ./
+              target: /grpc-front
+        command: npm run dev
+
+networks:
+    grpc-back_default:
+        external: true
