@@ -1,0 +1,18 @@
+version: v1
+plugins:
+  - plugin: go
+    out: ../grpc-back/proto
+    opt:
+      - paths=source_relative
+  - plugin: connect-go
+    out: ../grpc-back/proto
+    opt:
+      - paths=source_relative
+  - plugin: es
+    out: ../grpc-front/src/proto
+    opt:
+      - target=ts
+  - plugin: connect-es
+    out: ../grpc-front/src/proto
+    opt:
+      - target=ts
