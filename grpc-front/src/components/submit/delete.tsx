@@ -17,5 +17,9 @@ export default function Delete() {
             });
     };
 
-    return <button onClick={submit} style={{marginTop: "16px"}}>Delete</button>;
+    return (
+        <button onClick={submit} style={{ marginTop: "16px" }}>
+            Delete
+        </button>
+    );
 }
