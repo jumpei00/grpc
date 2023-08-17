@@ -1,9 +1,17 @@
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "../api/auth/[...nextauth]/route";
 import { getTodos } from "@/api/todo";
 import Create from "@/components/submit/create";
 import Link from "next/link";
 import React from "react";
+import { redirect } from "next/navigation";
+import Logout from "@/components/auth/logoutButton";
 
 export default async function Page() {
+    const session = await getServerSession(authOptions)
+    if (!session) {
+        redirect("/login")
+    }
     const data = await getTodos();
 
     return (
@@ -21,6 +29,7 @@ export default async function Page() {
                 ))}
             </ul>
             <Create />
+            <Logout></Logout>
         </>
     );
 }
