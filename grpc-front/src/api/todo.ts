@@ -1,4 +1,4 @@
-import { todoServerClient, todoWebClient } from "@/client/client";
+import { todoServerClient, todoWebClient } from "@/api/client";
 import { Todo } from "@/proto/todo/v1/todo_pb";
 
 export async function getTodos(): Promise<Todo[]> {
